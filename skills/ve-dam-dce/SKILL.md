@@ -36,12 +36,15 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - **Số cấu kiện** = số tầng (T3-7 → 5); dầm gộp DCE tự nhân khi VDAll (6 dầm × 5 tầng = 30).
 
 ## Vẽ (AutoCAD)
-- ActiveLayout = Model trước VDAll. Thứ tự T1 → T2 → T3-7 → Tum → Mái; tầng chưa sẵn thì chờ. Cột vẽ tầng cách nhau ≤ 50.000 (từ mép phải tầng trước; trừ khi vướng chữ dầm dài).
+- ActiveLayout = Model trước VDAll. Thứ tự T1 → T2 → T3-7 → Tum (dầm TBX, TBY) → Mái; tầng chưa sẵn thì chờ. Cột vẽ tầng cách nhau ≤ 50.000 (từ mép phải tầng trước; trừ khi vướng chữ dầm dài).
 - VDAll: `SendCommand("VDAll\nx,y\n")`, hộp "giống nhau chỉ vẽ 1 lần?" → Yes (`vdall_all.py`).
 - Thay 1 dầm: xoá dầm cũ cả khung Defpoints → `vd_ve.py <tên>`: VD ở (2.000.000, 0), dời x = điểm VDAll gốc của cột tầng, y theo vị trí dầm cũ. VD lẻ 1 dầm của nhóm gộp → đặt lại tên gộp + `sua_sck.py x0 x1 1 TEN=n --run`.
 - Sau khi vẽ: kiểm khung trùng (`khung_long.py`), không còn đối tượng tạm x > 1.9M, đủ tên dầm mỗi tầng (`dem_dam.py`).
 
 ## TAOMV + đánh số
+- **Tên dầm bị cắt view**: khi đường cắt view chạy qua tên "DẦM …" + TL (tên nằm nửa trong nửa ngoài view), dời tên dầm vào giữa phần view hiển thị đầy đủ, không để tên bị cắt đôi. Sau khi dời, kiểm vướng chữ: tên không đè thép, dim, trục, ký hiệu (user 24/11).
+- **View tiếp nối quá ngắn**: dầm dài bị cắt thành 2 view mà view sau chỉ còn 1 mẩu ngắn (vd 1 nhịp) → dời điểm cắt về một gối sớm hơn cho 2 view cân đối hơn (view sau dài hơn, kéo dãn tới gần mép phải). Thực hiện bằng cách chỉnh viewport trong LAYOUT. Không dời được (hết chỗ, tràn sheet) thì để nguyên, không cần làm (user 24/11).
+- **Kiểm vướng chữ toàn sheet** sau mọi lần dời: tag thép, chữ thép, dim không chồng nhau (vd ký hiệu thép dưới chồng lên dim nhịp).
 - ⛔ **CẤM TUYỆT ĐỐI: KHÔNG dời / move / sửa nét cắt, zigzag (layer DCE_MCZiCZac) hay bất kỳ đối tượng nào trong MODEL khi dàn trang.** Model dùng chung cho mọi viewport, dời ở model là hỏng cả sheet khác. Chỉ được dời nét cắt/zigzag trong LAYOUT (paper space), từng cái bị view đè. Lỗi này đã lặp lại nhiều lần (user nhắc 24/11).
 - Form LayoutVPs → Tạo MV → chọn bằng **C** (crossing; gõ W bị Unikey đổi thành Ư) + 2 góc + Enter → điểm chèn 20.8,413.2.
 - Đánh số layout: xx-101..199 cọc/móng; 201..299 cột; 301..399 MB dầm sàn; **401..499 chi tiết dầm** liên tục theo tầng; 501..599 thép sàn; 601..699 thang, ramp, bể nước, mái đón. Khung tên "CHI TIẾT / DẦM TẦNG n - 0x" (`fix_layouts.py`, `renumber.py`, `taborder.py`).
@@ -72,7 +75,7 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - [ ] User bấm Export Drawing Data.
 
 ### B. Vẽ
-- [ ] Thứ tự tầng T1 → T2 → T3-7 → Tum → Mái.
+- [ ] Thứ tự tầng T1 → T2 → T3-7 → Tum (TBX, TBY) → Mái; không bỏ sót Tầng Tum.
 - [ ] ActiveLayout = Model trước VDAll.
 - [ ] Khoảng cách giữa các cột vẽ tầng ≤ 50.000.
 
@@ -86,7 +89,8 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - [ ] Dầm và hàng mặt cắt của nó cùng sheet.
 - [ ] Không có mẩu view lẻ; chỉ kéo dãn view dầm bị cắt cụt (tới mép phải 531.8), không kéo hết.
 - [ ] View không thừa khoảng trống lớn.
-- [ ] Tên "DẦM …" + TL không bị viewport cắt (dầm dài 2 hàng → dời tên).
+- [ ] Tên "DẦM …" + TL không bị viewport cắt → dời tên vào phần view hiển thị đủ, rồi kiểm vướng chữ.
+- [ ] View tiếp nối quá ngắn → dời điểm cắt về gối sớm hơn cho cân đối (trong layout); không được thì bỏ qua.
 - [ ] Chữ tên MC không chồng / tràn.
 - [ ] Mọi thép, chữ, dim, tag do Claude thao tác ngay ngắn, không chồng lên nhau.
 - [ ] Khung tên CHI TIẾT / DẦM TẦNG n - 0x; số sheet liên tục.
