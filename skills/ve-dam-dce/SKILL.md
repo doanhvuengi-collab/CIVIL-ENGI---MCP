@@ -5,7 +5,7 @@ description: VẼ DẦM DCE — kiểm/sửa số liệu dầm trong Excel DCE (
 
 # VẼ DẦM DCE
 
-Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM + script Python). Bảng cột BanVe / BEAM DCE và danh sách script: `references/banve-va-cong-cu.md`. Tài liệu tổng hợp: `docs/DCE-TONG-HOP.md` trong repo.
+Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM + script Python). Bảng cột BanVe / BEAM DCE và danh sách script: `references/banve-va-cong-cu.md`. Skill độc lập, không phụ thuộc skill vẽ sàn. Tài liệu tổng hợp (tham khảo): `docs/DCE-TONG-HOP.md`.
 
 > **Ghi chú chuyển đổi:** phần thao tác CAD (VDAll, VD, TAOMV, soát sheet, quét đối tượng) hiện chạy qua COM. Khi plugin .NET trong AutoCAD (named pipe, lệnh cấp cao trả JSON) sẵn sàng, chuyển các bước đó sang lệnh plugin; quy tắc số liệu và checklist giữ nguyên.
 

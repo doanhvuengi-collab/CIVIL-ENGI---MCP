@@ -5,7 +5,14 @@ description: VẼ SÀN DCE (THÉP SÀN DCE) — rải thép sàn (lớp trên th
 
 # VẼ SÀN DCE
 
-Cách làm việc chung (tự kiểm, ít hỏi, báo ngắn, chờ CAD 3–5 s, save 1 lần khi xong đợt, chỉ xoá đối tượng của mình, user bảo dừng là dừng): xem skill `ve-dam-dce`. Tài liệu tổng hợp: `docs/DCE-TONG-HOP.md`.
+Skill độc lập, không phụ thuộc skill vẽ dầm. Tài liệu tổng hợp (tham khảo): `docs/DCE-TONG-HOP.md`.
+
+## Cách làm việc (bắt buộc)
+- Tự kiểm, tự bố trí, ít hỏi; chỉ hỏi khi bản vẽ thật sự mập mờ.
+- Báo ngắn gọn, giọng nhẹ, luôn ước lượng thời gian còn lại. Chờ CAD tối đa 3–5 s, chạy liên tục.
+- Rải toàn bộ → kiểm hàng loạt → báo 1 lần. Save 1 lần khi xong đợt (SaveCopyAs backup trước khi sửa).
+- Chỉ xoá đối tượng do mình tạo. Báo trước khi dùng SendKeys.
+- User bảo dừng → dừng ngay, chỉ ghi nhớ.
 
 Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dùng block/layer của user. Không dùng LISP. Công cụ: `E:\OneDrive\.Claude\AutoCAD-MCP`.
 
