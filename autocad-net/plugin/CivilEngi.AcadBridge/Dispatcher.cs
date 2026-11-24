@@ -48,6 +48,12 @@ namespace CivilEngi.AcadBridge
             ["dialog_click"] = DialogWatcher.ClickCmd,
         };
 
+        static readonly HashSet<string> Quiet = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "ping", "status", "command_status", "help", "dialogs" };
+        static string Short(object a)
+        {
+            try { var s = Json.Write(a); return s.Length > 300 ? s.Substring(0, 300) + "..." : s; } catch { return ""; }
+        }
+
         public static string Handle(string line)
         {
             object id = null;
@@ -61,6 +67,7 @@ namespace CivilEngi.AcadBridge
                 if (string.IsNullOrEmpty(cmd)) throw new BridgeException("Thieu 'cmd'");
                 if (!Map.TryGetValue(cmd, out var h)) throw new BridgeException("Lenh khong co: " + cmd + ". Goi 'help' de xem danh sach.");
                 var result = h(new Args(req.TryGetValue("args", out var a) ? a : null));
+                if (!Quiet.Contains(cmd)) Log.Write($"{cmd} ok {sw.ElapsedMilliseconds} ms {Short(a)}");
                 return Json.Write(new Dictionary<string, object> { ["id"] = id, ["ok"] = true, ["ms"] = sw.ElapsedMilliseconds, ["result"] = result });
             }
             catch (Exception ex)
@@ -68,6 +75,7 @@ namespace CivilEngi.AcadBridge
                 if (ex is System.Reflection.TargetInvocationException tie && tie.InnerException != null) ex = tie.InnerException;
                 string kind = ex is BusyException ? "busy" : ex is BridgeException ? "error" : "exception";
                 if (kind == "exception") Log.Write($"Lenh {cmd} loi: {ex}");
+                else Log.Write($"{cmd} {kind}: {ex.Message}");
                 return Json.Write(new Dictionary<string, object>
                 {
                     ["id"] = id, ["ok"] = false, ["kind"] = kind, ["ms"] = sw.ElapsedMilliseconds,

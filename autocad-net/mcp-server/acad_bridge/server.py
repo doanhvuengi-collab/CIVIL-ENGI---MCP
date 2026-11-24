@@ -14,7 +14,7 @@ try:  # mcp >= 2
 except ImportError:  # mcp 1.x
     from mcp.server.fastmcp import FastMCP as _Server
 
-from .client import Acad, AcadError
+from .client import Acad, AcadError, instances
 
 mcp = _Server("autocad-net")
 _acad = Acad()
@@ -23,6 +23,27 @@ _acad = Acad()
 def _call(cmd: str, **args) -> Any:
     try:
         return _acad.call(cmd, **args)
+    except AcadError as ex:
+        return {"ok": False, "kind": ex.kind, "error": str(ex)}
+
+
+# ----------------------------------------------------------------- phien AutoCAD
+@mcp.tool()
+def acad_instances() -> Any:
+    """Cac phien AutoCAD dang chay plugin (pipe, pid, ban ve dang mo) va ban ve dich hien tai."""
+    return {"target_doc": _acad.doc, "instances": instances()}
+
+
+@mcp.tool()
+def acad_target(doc: str | None) -> Any:
+    """Chon ban ve dich cho MOI lenh sau (chuoi con ten file, vd 'DOANH TRAI - 1'). Bat buoc khi mo nhieu AutoCAD.
+    Plugin tu tim dung phien AutoCAD dang mo ban ve do. doc=None de bo chon."""
+    _acad.target(doc)
+    if not doc:
+        return {"target_doc": None}
+    try:
+        _acad._resolve()
+        return {"target_doc": doc, "pipe": _acad._resolved}
     except AcadError as ex:
         return {"ok": False, "kind": ex.kind, "error": str(ex)}
 

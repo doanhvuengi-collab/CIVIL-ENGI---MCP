@@ -54,6 +54,8 @@ namespace CivilEngi.AcadBridge
             var r = new Dictionary<string, object>
             {
                 ["bridge"] = Plugin.Version,
+                ["pid"] = Process.GetCurrentProcess().Id,
+                ["pipe"] = Plugin.Server?.Name,
                 ["docs"] = docs,
                 ["active_doc"] = doc == null ? null : Path.GetFileName(doc.Name),
                 ["cmdactive"] = Docs.CmdActive(),

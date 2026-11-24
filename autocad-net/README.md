@@ -4,7 +4,7 @@ Thay cho server COM cũ (`E:\OneDrive\.Claude\AutoCAD-MCP\server.py`). Ngày 24/
 lỗi "Call was rejected" và treo khi lệnh DCE chờ nhập. Bộ này chạy **bên trong AutoCAD 2023**:
 
 ```
-Claude Code ──MCP(stdio)──> mcp-server (Python) ──named pipe \\.\pipe\CivilEngiAcad──> CivilEngi.AcadBridge.dll (trong acad.exe)
+Claude Code ──MCP(stdio)──> mcp-server (Python) ──named pipe \\.\pipe\CivilEngiAcad-<pid>──> CivilEngi.AcadBridge.dll (trong acad.exe)
 Script Python ──acad_bridge.Acad()────────────────┘
 ```
 
@@ -31,6 +31,9 @@ Script sẽ build DLL, copy vào `%APPDATA%\Autodesk\ApplicationPlugins\CivilEng
 Nếu AutoCAD đang mở thì NETLOAD DLL trong bundle để dùng ngay. Gõ `CEBRIDGE` trong AutoCAD để xem trạng thái, log nằm ở `%TEMP%\CivilEngiAcadBridge.log`.
 
 Muốn build tay: `dotnet build autocad-net\plugin\CivilEngi.AcadBridge -c Release`. Lệnh này tải gói `AutoCAD.NET 24.2.0` từ nuget.org để biên dịch và không copy DLL của AutoCAD ra.
+
+## Mở nhiều AutoCAD cùng lúc
+Mỗi phiên AutoCAD mở một pipe riêng `CivilEngiAcad-<pid>`. Client chọn phiên theo tên bản vẽ: tool `acad_target("DOANH TRAI - 1")`, hoặc `Acad(doc=...)`, hoặc biến môi trường `CIVIL_ACAD_DOC`. Đang mở nhiều phiên mà không chỉ rõ thì client báo lỗi và liệt kê các phiên, không bao giờ đoán. `python -m acad_bridge instances` liệt kê các phiên. Log ghi từng lệnh sửa kèm pid.
 
 ## Lệnh của plugin (tool MCP `acad_*`)
 

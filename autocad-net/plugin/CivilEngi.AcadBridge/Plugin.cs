@@ -15,7 +15,9 @@ namespace CivilEngi.AcadBridge
     /// </summary>
     public class Plugin : IExtensionApplication
     {
-        public const string Version = "0.1.0";
+        public const string Version = "0.2.0";
+        public static readonly string BaseName =
+            string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE")) ? "CivilEngiAcad" : Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE");
         internal static PipeServer Server;
 
         public void Initialize()
@@ -23,8 +25,8 @@ namespace CivilEngi.AcadBridge
             try
             {
                 MainThread.Init();
-                string name = Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE");
-                if (string.IsNullOrWhiteSpace(name)) name = "CivilEngiAcad";
+                // Moi phien AutoCAD 1 pipe rieng: CivilEngiAcad-<pid>. Client chon phien theo ten ban ve.
+                string name = BaseName + "-" + System.Diagnostics.Process.GetCurrentProcess().Id;
                 Server = new PipeServer(name);
                 Server.Start();
                 Log.Write("Khoi dong, pipe=" + name + ", AutoCAD " + Application.Version);
@@ -60,7 +62,7 @@ namespace CivilEngi.AcadBridge
         public void RestartCommand()
         {
             try { Server?.Stop(); } catch { }
-            Server = new PipeServer(Server?.Name ?? "CivilEngiAcad");
+            Server = new PipeServer(Server?.Name ?? (BaseName + "-" + System.Diagnostics.Process.GetCurrentProcess().Id));
             Server.Start();
             WriteLine("\nAcadBridge da khoi dong lai.");
         }
@@ -70,6 +72,7 @@ namespace CivilEngi.AcadBridge
     {
         public static readonly string FilePath = Path.Combine(Path.GetTempPath(), "CivilEngiAcadBridge.log");
         static readonly object Lk = new object();
+        static readonly int Pid = System.Diagnostics.Process.GetCurrentProcess().Id;
         public static void Write(string s)
         {
             try
@@ -78,7 +81,7 @@ namespace CivilEngi.AcadBridge
                 {
                     var fi = new FileInfo(FilePath);
                     if (fi.Exists && fi.Length > 5_000_000) fi.Delete();
-                    File.AppendAllText(FilePath, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff ") + s + Environment.NewLine);
+                    File.AppendAllText(FilePath, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff ") + "[" + Pid + "] " + s + Environment.NewLine);
                 }
             }
             catch { }
