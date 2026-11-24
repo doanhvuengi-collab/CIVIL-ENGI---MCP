@@ -51,6 +51,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - **Ký hiệu và dim ở hai phía thanh**: ký hiệu + chữ "Ø..a.." một bên thanh, dim (1000 / L/3) bên kia; không kẹp chữ giữa dim và thanh, không để chữ sát thanh (user 24/11).
   - Phương X: vòng ký hiệu + chữ "Ø..a.." phía TRÊN thanh, cặp dim 1000 phía DƯỚI thanh.
   - Phương Y: chữ một bên thanh, dim L/3 bên kia.
+- **Ký hiệu xếp theo tuyến (nhất là lớp dưới)**: ký hiệu thép phương Y đặt trên MỘT hàng ngang chạy qua các ô (cùng toạ độ Y, đi lần lượt ô này sang ô kia); ký hiệu thép phương X gom trên MỘT cột dọc ở một dải ô (cùng toạ độ X, đọc từ trên xuống). Không rải ký hiệu lung tung theo đường chéo/cong khắp mặt bằng (user 24/11).
 - **Không nét nào cắt qua chữ**: đường phân bố, thanh, nét dim không được đi xuyên qua chữ dim ("1000", "2200") hay vòng/chữ ký hiệu; vướng thì dời ký hiệu hoặc dời đường phân bố dọc thanh (user 24/11).
 - Ký hiệu: trượt dọc thanh tới chỗ thoáng, phải nằm trên thanh. Cả vòng tròn lẫn chữ "Ø..a.." nằm TRONG ô sàn: không đè mép dầm / nét viền ô / hatch cột; phương X đặt sát phía trong mép trái ô; phương Y chữ đứng gọn trong ô, không chồng ký hiệu phương kia chỗ giao.
 
@@ -62,6 +63,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - [ ] Hai dim 1000 của mỗi bộ chung một đường, không so le.
 - [ ] Đường phân bố cách mép dầm, không đè dầm; ký hiệu và dim nằm hai phía thanh.
 - [ ] Phương X: ký hiệu trên thanh, dim dưới thanh; không nét nào cắt qua chữ.
+- [ ] Ký hiệu cả khung xếp theo 1 hàng ngang + 1 cột dọc, không rải chéo.
 - [ ] Lớp dưới chạy suốt nhóm ô, né lỗ, neo 35d.
 - [ ] Ký hiệu + chữ nằm trong ô, không chồng nét/chữ (tự kiểm trước khi báo).
 - [ ] Đã xoá bộ mẫu tạm; handle lưu trong handles_*.txt.
