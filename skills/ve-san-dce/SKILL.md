@@ -39,6 +39,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - **Thẳng hàng**: các bộ thép mũ cùng phương trong một dải ô liên tiếp (cùng hàng ô) phải nằm trên MỘT đường thẳng: phương X cùng toạ độ Y, phương Y cùng toạ độ X. Không để thanh bậc thang lệch cao độ giữa các nhịp. Vướng chữ thì dời ký hiệu, không dời thanh lệch khỏi hàng (user 24/11).
 - Thép cạnh cách biên sàn ngoài cùng 25.
 - Dim 1000 cách thanh 700 (vướng chữ → 500).
+- **Dim thẳng hàng**: 2 dim 1000 hai bên dầm của cùng một bộ thép mũ phải chung một đường dim (cùng khoảng cách tới thanh), không so le. Vướng chữ thì dời cả cặp dim (cùng 500) hoặc dời ký hiệu, không dời riêng một dim (user 24/11).
 - Ký hiệu: trượt dọc thanh tới chỗ thoáng, phải nằm trên thanh. Cả vòng tròn lẫn chữ "Ø..a.." nằm TRONG ô sàn: không đè mép dầm / nét viền ô / hatch cột; phương X đặt sát phía trong mép trái ô; phương Y chữ đứng gọn trong ô, không chồng ký hiệu phương kia chỗ giao.
 
 ## Checklist mỗi khung
@@ -46,6 +47,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - [ ] Đúng khung thép sàn (không phải MB dầm / MB cột); tầng 1 chỉ ô nét đứt.
 - [ ] Lớp trên đủ X và Y; khe < 1600 đã nối suốt; dải < 1500 đã gộp.
 - [ ] Thép mũ cùng phương trong cùng hàng ô thẳng hàng, không lệch bậc.
+- [ ] Hai dim 1000 của mỗi bộ chung một đường, không so le.
 - [ ] Lớp dưới chạy suốt nhóm ô, né lỗ, neo 35d.
 - [ ] Ký hiệu + chữ nằm trong ô, không chồng nét/chữ (tự kiểm trước khi báo).
 - [ ] Đã xoá bộ mẫu tạm; handle lưu trong handles_*.txt.
