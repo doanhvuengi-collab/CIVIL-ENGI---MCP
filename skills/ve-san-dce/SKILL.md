@@ -40,6 +40,8 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - Thép cạnh cách biên sàn ngoài cùng 25.
 - Dim 1000 cách thanh 700 (vướng chữ → 500).
 - **Dim thẳng hàng**: 2 dim 1000 hai bên dầm của cùng một bộ thép mũ phải chung một đường dim (cùng khoảng cách tới thanh), không so le. Vướng chữ thì dời cả cặp dim (cùng 500) hoặc dời ký hiệu, không dời riêng một dim (user 24/11).
+- **Đường phân bố** nằm trong ô sàn, cách mép dầm một khoảng rõ ràng; không nằm sát hay đè lên nét dầm (user 24/11).
+- **Ký hiệu và dim ở hai phía thanh**: ký hiệu + chữ "Ø..a.." một bên thanh, dim (1000 / L/3) bên kia; không kẹp chữ giữa dim và thanh, không để chữ sát thanh (user 24/11).
 - Ký hiệu: trượt dọc thanh tới chỗ thoáng, phải nằm trên thanh. Cả vòng tròn lẫn chữ "Ø..a.." nằm TRONG ô sàn: không đè mép dầm / nét viền ô / hatch cột; phương X đặt sát phía trong mép trái ô; phương Y chữ đứng gọn trong ô, không chồng ký hiệu phương kia chỗ giao.
 
 ## Checklist mỗi khung
@@ -48,6 +50,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - [ ] Lớp trên đủ X và Y; khe < 1600 đã nối suốt; dải < 1500 đã gộp.
 - [ ] Thép mũ cùng phương trong cùng hàng ô thẳng hàng, không lệch bậc.
 - [ ] Hai dim 1000 của mỗi bộ chung một đường, không so le.
+- [ ] Đường phân bố cách mép dầm, không đè dầm; ký hiệu và dim nằm hai phía thanh.
 - [ ] Lớp dưới chạy suốt nhóm ô, né lỗ, neo 35d.
 - [ ] Ký hiệu + chữ nằm trong ô, không chồng nét/chữ (tự kiểm trước khi báo).
 - [ ] Đã xoá bộ mẫu tạm; handle lưu trong handles_*.txt.
