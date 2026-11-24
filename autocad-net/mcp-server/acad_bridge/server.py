@@ -274,6 +274,13 @@ def acad_dialog_click(button: str, title: str | None = None, text: str | None = 
     return _call("dialog_click", button=button, title=title, text=text)
 
 
+@mcp.tool()
+def acad_dialog_select(value: str, title: str | None = None, index: int | None = None, current: str | None = None) -> Any:
+    """Chon muc trong combobox cua form add-in (vd o Layout cua TAOMV = '03-201').
+    index = thu tu combo trong form (xem acad_dialogs), hoac current = chuoi con cua text dang hien."""
+    return _call("dialog_select", value=value, title=title, index=index, current=current)
+
+
 # ----------------------------------------------------------------- man hinh, bien, luu
 @mcp.tool()
 def acad_zoom(mode: str = "extents", bbox: list[float] | None = None, center: list[float] | None = None,

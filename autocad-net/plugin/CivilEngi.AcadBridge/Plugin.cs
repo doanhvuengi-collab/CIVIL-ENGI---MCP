@@ -15,7 +15,7 @@ namespace CivilEngi.AcadBridge
     /// </summary>
     public class Plugin : IExtensionApplication
     {
-        public const string Version = "0.2.0";
+        public const string Version = "0.3.0";
         public static readonly string BaseName =
             string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE")) ? "CivilEngiAcad" : Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE");
         internal static PipeServer Server;

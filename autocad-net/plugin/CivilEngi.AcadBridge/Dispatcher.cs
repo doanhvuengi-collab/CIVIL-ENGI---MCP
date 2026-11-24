@@ -46,6 +46,7 @@ namespace CivilEngi.AcadBridge
             ["command_cancel"] = CommandRunner.Cancel,
             ["dialogs"] = a => DialogWatcher.List(),
             ["dialog_click"] = DialogWatcher.ClickCmd,
+            ["dialog_select"] = DialogWatcher.SelectCmd,
         };
 
         static readonly HashSet<string> Quiet = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "ping", "status", "command_status", "help", "dialogs" };
