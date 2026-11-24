@@ -39,6 +39,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 6. Bố cục khung (hàng/cột nào là tầng nào, lớp trên/dưới) xác định lại cho từng bản vẽ theo tiêu đề, ghi vào bộ nhớ dự án, không dùng lại toạ độ của bản vẽ khác.
 
 ## Quy tắc bố trí
+- **NGUYÊN TẮC CHUNG (user 24/11):** mọi thép do Claude thao tác phải sắp xếp ngay ngắn, gọn gàng, thẳng hàng. Chữ, dim, thanh thép, ký hiệu (tag) TUYỆT ĐỐI không chồng lên nhau. Các quy tắc chi tiết dưới đây đều phục vụ nguyên tắc này; gặp trường hợp chưa có quy tắc thì vẫn phải đạt nguyên tắc này.
 - LỚP TRÊN: rải cả X và Y. Phương X ra 1000 mỗi bên từ mép dầm; phương Y (thép đứng) ra L/3 nhịp tim-tim, làm tròn lên 50. Khe giữa 2 đầu < 1600 → chạy suốt. Ô đứng riêng (2 gối biên) → chạy suốt, không cắt.
 - Dải phân bố hẹp < 1500 → gộp vào bộ bên cạnh (phủ ≥ 70%).
 - LỚP DƯỚI: chạy suốt cả nhóm ô liền nhau, chỉ né lỗ; neo dầm 35d (thẳng trong dầm + móc lên, tối thiểu 110).
@@ -64,6 +65,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - [ ] Đường phân bố cách mép dầm, không đè dầm; ký hiệu và dim nằm hai phía thanh.
 - [ ] Phương X: ký hiệu trên thanh, dim dưới thanh; không nét nào cắt qua chữ.
 - [ ] Ký hiệu cả khung xếp theo 1 hàng ngang + 1 cột dọc, không rải chéo.
+- [ ] Rà cả khung: thép ngay ngắn, KHÔNG có chữ / dim / thanh / tag nào chồng nhau (tự quét bbox chồng lấn + chụp kiểm trước khi báo).
 - [ ] Lớp dưới chạy suốt nhóm ô, né lỗ, neo 35d.
 - [ ] Ký hiệu + chữ nằm trong ô, không chồng nét/chữ (tự kiểm trước khi báo).
 - [ ] Đã xoá bộ mẫu tạm; handle lưu trong handles_*.txt.

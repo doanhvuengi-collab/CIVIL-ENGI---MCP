@@ -87,6 +87,7 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - [ ] View không thừa khoảng trống lớn.
 - [ ] Tên "DẦM …" + TL không bị viewport cắt (dầm dài 2 hàng → dời tên).
 - [ ] Chữ tên MC không chồng / tràn.
+- [ ] Mọi thép, chữ, dim, tag do Claude thao tác ngay ngắn, không chồng lên nhau.
 - [ ] Khung tên CHI TIẾT / DẦM TẦNG n - 0x; số sheet liên tục.
 - [ ] Sheet bất thường (view to/trống, MC tách khỏi dầm) → kiểm số liệu dầm trước (vd giật ±3600).
 - [ ] Tờ chỉ 1 dầm → xoá nét DCE_NetKhuat.
