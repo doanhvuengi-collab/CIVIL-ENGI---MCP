@@ -461,6 +461,8 @@ namespace CivilEngi.AcadBridge
             string layer = a.Str("layer");
             int? color = a.Has("color") ? a.Int("color") : (int?)null;
             string lt = a.Str("linetype");
+            double? lts = a.Has("linetype_scale") ? a.Num("linetype_scale") : (double?)null;
+            double? width = a.Has("width") ? a.Num("width") : (double?)null;
             return MainThread.Run(() =>
             {
                 if (layer != null)
@@ -475,6 +477,8 @@ namespace CivilEngi.AcadBridge
                     if (layer != null) e.Layer = layer;
                     if (color.HasValue) e.ColorIndex = color.Value;
                     if (lt != null) e.Linetype = lt;
+                    if (lts.HasValue) e.LinetypeScale = lts.Value;
+                    if (width.HasValue && e is Polyline pw) pw.ConstantWidth = width.Value;
                 });
             });
         }

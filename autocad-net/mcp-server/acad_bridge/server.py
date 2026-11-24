@@ -152,9 +152,11 @@ def acad_copy(handles: list[str], dx: float, dy: float, doc: str | None = None) 
 
 @mcp.tool()
 def acad_set_props(handles: list[str], layer: str | None = None, color: int | None = None,
-                   linetype: str | None = None, doc: str | None = None) -> Any:
-    """Doi layer (tu tao neu chua co) / mau (256 = ByLayer) / linetype."""
-    return _call("set_props", handles=handles, layer=layer, color=color, linetype=linetype, doc=doc)
+                   linetype: str | None = None, linetype_scale: float | None = None,
+                   width: float | None = None, doc: str | None = None) -> Any:
+    """Doi layer (tu tao neu chua co) / mau (256 = ByLayer) / linetype / linetype_scale / width (polyline)."""
+    return _call("set_props", handles=handles, layer=layer, color=color, linetype=linetype,
+                 linetype_scale=linetype_scale, width=width, doc=doc)
 
 
 @mcp.tool()
