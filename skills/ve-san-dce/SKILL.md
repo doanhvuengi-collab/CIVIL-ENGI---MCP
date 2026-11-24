@@ -52,6 +52,7 @@ Kỹ sư kết cấu nhiều năm kinh nghiệm: tự bố trí thép, chỉ dù
 - **Ký hiệu và dim ở hai phía thanh**: ký hiệu + chữ "Ø..a.." một bên thanh, dim (1000 / L/3) bên kia; không kẹp chữ giữa dim và thanh, không để chữ sát thanh (user 24/11).
   - Phương X: vòng ký hiệu + chữ "Ø..a.." phía TRÊN thanh, cặp dim 1000 phía DƯỚI thanh.
   - Phương Y: chữ một bên thanh, dim L/3 bên kia.
+- **Ô giống nhau → bố trí giống hệt nhau**: các ô cùng nhịp/cùng dải lặp lại thì bộ thép, ký hiệu, dim đặt cùng vị trí tương đối trong ô (như copy/array), tạo thành các hàng đều. Có khung đã được user duyệt (vd TẦNG 2) thì lấy làm chuẩn cho khung khác cùng lưới, không bố trí lại kiểu khác (user 24/11).
 - **Ký hiệu xếp theo tuyến (nhất là lớp dưới)**: ký hiệu thép phương Y đặt trên MỘT hàng ngang chạy qua các ô (cùng toạ độ Y, đi lần lượt ô này sang ô kia); ký hiệu thép phương X gom trên MỘT cột dọc ở một dải ô (cùng toạ độ X, đọc từ trên xuống). Không rải ký hiệu lung tung theo đường chéo/cong khắp mặt bằng (user 24/11).
 - **Không nét nào cắt qua chữ**: đường phân bố, thanh, nét dim không được đi xuyên qua chữ dim ("1000", "2200") hay vòng/chữ ký hiệu; vướng thì dời ký hiệu hoặc dời đường phân bố dọc thanh (user 24/11).
 - Ký hiệu: trượt dọc thanh tới chỗ thoáng, phải nằm trên thanh. Cả vòng tròn lẫn chữ "Ø..a.." nằm TRONG ô sàn: không đè mép dầm / nét viền ô / hatch cột; phương X đặt sát phía trong mép trái ô; phương Y chữ đứng gọn trong ô, không chồng ký hiệu phương kia chỗ giao.
