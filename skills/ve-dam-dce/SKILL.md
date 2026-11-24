@@ -42,6 +42,7 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - Sau khi vẽ: kiểm khung trùng (`khung_long.py`), không còn đối tượng tạm x > 1.9M, đủ tên dầm mỗi tầng (`dem_dam.py`).
 
 ## TAOMV + đánh số
+- ⛔ **CẤM TUYỆT ĐỐI: KHÔNG dời / move / sửa nét cắt, zigzag (layer DCE_MCZiCZac) hay bất kỳ đối tượng nào trong MODEL khi dàn trang.** Model dùng chung cho mọi viewport, dời ở model là hỏng cả sheet khác. Chỉ được dời nét cắt/zigzag trong LAYOUT (paper space), từng cái bị view đè. Lỗi này đã lặp lại nhiều lần (user nhắc 24/11).
 - Form LayoutVPs → Tạo MV → chọn bằng **C** (crossing; gõ W bị Unikey đổi thành Ư) + 2 góc + Enter → điểm chèn 20.8,413.2.
 - Đánh số layout: xx-101..199 cọc/móng; 201..299 cột; 301..399 MB dầm sàn; **401..499 chi tiết dầm** liên tục theo tầng; 501..599 thép sàn; 601..699 thang, ramp, bể nước, mái đón. Khung tên "CHI TIẾT / DẦM TẦNG n - 0x" (`fix_layouts.py`, `renumber.py`, `taborder.py`).
 
@@ -91,7 +92,7 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - [ ] Khung tên CHI TIẾT / DẦM TẦNG n - 0x; số sheet liên tục.
 - [ ] Sheet bất thường (view to/trống, MC tách khỏi dầm) → kiểm số liệu dầm trước (vd giật ±3600).
 - [ ] Tờ chỉ 1 dầm → xoá nét DCE_NetKhuat.
-- [ ] Kéo dãn view → chỉ dời zigzag (layer DCE_MCZiCZac) bị view đè trong layout; KHÔNG move zigzag model hàng loạt.
+- [ ] ⛔ **Nét cắt / zigzag: chỉ dời trong LAYOUT (paper space), từng cái bị view đè. TUYỆT ĐỐI KHÔNG dời trong MODEL.** Trước khi chạy lệnh dời, xác nhận ActiveSpace = paper space.
 - [ ] Hàng MC tràn → B1 dời dầm lên; B2 dời MC lên; B3 thu view MC; B4 copy view MC xuống hàng dưới. Chật quá → để mặc định + báo.
 - [ ] Mỗi layout dàn xong: Z ↵ E ↵ (Zoom Extents) trong paper space.
 - [ ] Chụp từng sheet tự kiểm trước khi báo user.
