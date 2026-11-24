@@ -90,7 +90,7 @@ namespace CivilEngi.AcadBridge
                 {
                     var lo = (Layout)tr.GetObject(en.Value, OpenMode.ForRead);
                     int nvp = 0;
-                    try { nvp = Math.Max(0, lo.GetViewports().Count - 1); } catch { }
+                    if (!lo.ModelType) try { nvp = LayoutViewports(tr, db, lo.LayoutName).Count; } catch { }
                     list.Add(new Dictionary<string, object>
                     {
                         ["name"] = lo.LayoutName,

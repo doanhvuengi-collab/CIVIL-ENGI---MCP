@@ -185,17 +185,19 @@ namespace CivilEngi.AcadBridge
             return d;
         }
 
-        static List<Viewport> LayoutViewports(Transaction tr, Database db, string layout)
+        internal static List<Viewport> LayoutViewports(Transaction tr, Database db, string layout)
         {
             var lo = Docs.FindLayout(tr, db, layout);
             var btr = (BlockTableRecord)tr.GetObject(lo.BlockTableRecordId, OpenMode.ForRead);
             var res = new List<Viewport>();
+            bool first = true;
             foreach (ObjectId id in btr)
             {
                 if (id.IsErased || id.ObjectClass.DxfName != "VIEWPORT") continue;
                 var vp = (Viewport)tr.GetObject(id, OpenMode.ForRead);
-                if (vp.Number == 1) continue; // khung giay
-                // vp.Number = -1 khi layout chua kich hoat: van lay (tru vp bao trum co width/height bang giay)
+                // Viewport dau tien trong layout = khung giay (Number = 1 khi layout da mo, -1 khi chua mo trong phien)
+                if (first) { first = false; continue; }
+                if (vp.Number == 1) continue;
                 res.Add(vp);
             }
             return res;
