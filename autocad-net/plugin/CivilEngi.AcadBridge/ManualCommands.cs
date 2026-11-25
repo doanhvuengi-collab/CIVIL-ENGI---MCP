@@ -76,7 +76,7 @@ namespace CivilEngi.AcadBridge
         public void DanTrangCmd()
         {
             var ed = Ed;
-            var mau = AskStr("Layout mau", _mau); if (string.IsNullOrEmpty(mau)) return;
+            var mau = AskStr("Layout mau (to TRONG chi co khung ten)", _mau); if (string.IsNullOrEmpty(mau)) return;
             var p1 = ed.GetPoint("\nVung tang trong Model - goc thu nhat: ");
             if (p1.Status != PromptStatus.OK) return;
             var p2 = ed.GetCorner("\nGoc doi dien: ", p1.Value);

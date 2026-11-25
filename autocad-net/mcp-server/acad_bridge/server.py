@@ -239,7 +239,8 @@ def acad_dam_dan_trang(mau: str, window: list[float], tang: str, prefix: str, st
                        ticks: dict[str, bool] | None = None, fix: bool = True, fix_names: bool = True,
                        net_khuat: bool = True, zoom: bool = True, shots: bool = True, max_shots: int = 6,
                        backup: bool = True, save: bool = False, title_find: str | None = None,
-                       title_format: str | None = None, timeout_s: float = 600, doc: str | None = None) -> Any:
+                       title_format: str | None = None, timeout_s: float = 900, max_layouts: int = 40,
+                       allow_template_viewports: bool = False, doc: str | None = None) -> Any:
     r"""DAN TRANG 1 TANG DAM DCE trong 1 lan goi (thay hang tram lenh nho):
     backup -> TAOMV (form LayoutVPs: chon layout mau `mau`, tick o, Tao MV, chon C theo window, diem chen 20.8,413.2)
     -> doi ten to <prefix>-<start..> + khung ten 'DẦM TẦNG n - 0x' -> sap tab -> soat & sua tung to:
@@ -247,10 +248,13 @@ def acad_dam_dan_trang(mau: str, window: list[float], tang: str, prefix: str, st
     (chi ten + TL, khong dong zigzag/net cat model), bao: dam vat 2 to, view noi ngan, view chong / ngoai khung, chu bi cat
     -> Z E tung to -> chup anh cac to co loi (PNG trong %TEMP%\CivilEngiShots). save=False: tu luu 1 lan cuoi dot.
     window=[x1,y1,x2,y2] vung model cua tang. tang: '1', '3-4', 'TUM', 'MAI'. start bo trong = so 4xx lon nhat + 1.
+    mau PHAI la to trong chi co khung ten (mau co viewport -> bao loi, vd to thep san 03-306 tung tao 149 to).
+    ticks: chi dat khi can, mac dinh giu nguyen o tick tren form. Tao > max_layouts to -> dung, khong doi ten.
     Tra gon: so_loi, loi[], da_sua[], anh[]. CHI XEM ANH cac to trong 'anh'."""
     return _call("dam_dan_trang", mau=mau, window=window, tang=tang, prefix=prefix, start=start, ticks=ticks,
                  fix=fix, fix_names=fix_names, net_khuat=net_khuat, zoom=zoom, shots=shots, max_shots=max_shots,
-                 backup=backup, save=save, title_find=title_find, title_format=title_format, timeout_s=timeout_s, doc=doc)
+                 backup=backup, save=save, title_find=title_find, title_format=title_format, timeout_s=timeout_s,
+                 max_layouts=max_layouts, allow_template_viewports=allow_template_viewports, doc=doc)
 
 
 @mcp.tool()

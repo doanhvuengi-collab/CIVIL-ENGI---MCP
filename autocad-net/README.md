@@ -69,6 +69,8 @@ Một lần gọi làm hết: backup → TAOMV (tự chọn layout mẫu, tick 4
 | View chồng nhau / lòi ra ngoài khung giấy | | ✓ |
 | Chữ, ký hiệu khác bị viền view cắt (đã lọc block thép sàn bbox lớn, zigzag, Defpoints) | | ✓ |
 
+**Layout mẫu phải là tờ trống chỉ có khung tên** (vd MAU-DAM). Mẫu có sẵn viewport (vd tờ thép sàn) thì lệnh dừng ngay: DCE sẽ copy cả viewport đó và xé tầng ra hàng trăm tờ. Lệnh không đổi ô tick của form TAOMV (giữ như anh để), chờ DCE tính xong mới gửi điểm chèn, và dừng nếu tạo quá 40 tờ.
+
 Không đụng: zigzag/nét cắt trong model, viewport (không xoá), đối tượng không do lệnh tạo (trừ dời tên dầm bị cắt và nét ngăn).
 Không tự lưu trừ khi `save=true`.
 

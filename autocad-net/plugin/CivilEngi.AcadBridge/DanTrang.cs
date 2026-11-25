@@ -602,6 +602,22 @@ namespace CivilEngi.AcadBridge
             var rxNum = new Regex("^" + Regex.Escape(prefix) + @"-(4\d\d)$");
             int start = a.Has("start") ? a.Int("start") : before.Select(n => rxNum.Match(n)).Where(m => m.Success).Select(m => int.Parse(m.Groups[1].Value)).DefaultIfEmpty(400).Max() + 1;
 
+            // 1b. layout mau phai la to TRONG (chi khung ten, khong viewport). Mau co san viewport (vd to thep san)
+            //     -> DCE copy ca viewport sang moi to, chi con goc nho de xep -> moi to 1 dam / 2 MC (loi 26/11: 149 to).
+            int vpMau = MainThread.Run(() =>
+            {
+                var doc = Docs.Resolve(a);
+                using (var tr = doc.Database.TransactionManager.StartOpenCloseTransaction())
+                {
+                    if (!before.Any(n => n.Equals(mau, StringComparison.OrdinalIgnoreCase))) throw new BridgeException("Khong co layout mau '" + mau + "'");
+                    int c = Commands.LayoutViewports(tr, doc.Database, mau).Count;
+                    tr.Commit();
+                    return c;
+                }
+            });
+            if (vpMau > 0 && !a.Bool("allow_template_viewports"))
+                throw new BridgeException($"Layout mau '{mau}' dang co {vpMau} viewport. Mau chi tiet dam phai la to trong chi co khung ten (vd MAU-DAM). Chon mau khac, hoac xoa viewport trong mau.");
+
             // 2. TAOMV
             var tao = RunTaomv(a, mau, win, rep0);
             log.Add("taomv " + tao);
@@ -610,6 +626,10 @@ namespace CivilEngi.AcadBridge
                                         .OrderBy(n => int.Parse(rxNew.Match(n).Groups[1].Value)).ToList();
             if (created.Count == 0)
                 throw new BridgeException($"TAOMV khong tao layout '{mau} (n)' nao. {tao}. {string.Join("; ", rep0.Notes)}");
+            int maxLayouts = a.Int("max_layouts", 40);
+            if (created.Count > maxLayouts)
+                throw new BridgeException($"TAOMV tao {created.Count} to (> {maxLayouts}), bat thuong: kiem layout mau / vung chon / o tick form TAOMV. " +
+                                          $"Plugin KHONG doi ten, KHONG soat. Cac to tam ten '{mau} (n)'. Muon bo: dong ban ve khong luu (da backup).");
 
             // 3. dat ten to + khung ten
             var finalNames = created.Select((n, i) => $"{prefix}-{start + i}").ToList();
@@ -704,8 +724,28 @@ namespace CivilEngi.AcadBridge
             return (byTab ? r.OrderBy(x => x.Item2) : r.AsEnumerable()).Select(x => x.Item1).ToList();
         });
 
+        /// <summary>Cho main thread AutoCAD ranh (khong con tinh). Tra CMDACTIVE luc do (0 = khong con lenh).</summary>
+        static int WaitResponsive(double timeoutS)
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            while (true)
+            {
+                try
+                {
+                    int c = MainThread.Run(() => Docs.CmdActive(), 2000, 10000);
+                    Thread.Sleep(1500);
+                    int c2 = MainThread.Run(() => Docs.CmdActive(), 2000, 10000);
+                    if (c == c2) return c2;
+                }
+                catch (BusyException) { }
+                if (sw.Elapsed.TotalSeconds > timeoutS) throw new BusyException("AutoCAD van ban sau " + timeoutS + " s (DCE dang tinh TAOMV?)");
+                Thread.Sleep(1000);
+            }
+        }
+
         static Dictionary<string, object> Cmd(Args a, string command, double timeout, double stall, bool force)
         {
+            WaitResponsive(Math.Max(timeout, 300));
             var d = new Dictionary<string, object>
             {
                 ["command"] = command, ["wait"] = true, ["timeout_s"] = timeout, ["stall_s"] = stall,
@@ -737,10 +777,8 @@ namespace CivilEngi.AcadBridge
             Thread.Sleep(300);
 
             // o tick: chi bam khi trang thai khac mong muon, doc lai de xac nhan
-            var ticks = a.Dict("ticks") ?? new Dictionary<string, object>
-            {
-                ["New - Copy layout"] = true, ["Tự động xếp Khung tên"] = true, ["Sắp xếp tối ưu"] = true, ["Cắt đúng trục"] = true,
-            };
+            // mac dinh KHONG dong vao o tick: giu dung trang thai user dang de tren form
+            var ticks = a.Dict("ticks") ?? new Dictionary<string, object>();
             foreach (var kv in ticks)
             {
                 bool want = Args.ToDouble(kv.Value is bool bb ? (bb ? 1 : 0) : kv.Value) != 0;
@@ -758,10 +796,18 @@ namespace CivilEngi.AcadBridge
             Thread.Sleep(3000);
 
             string P(double x, double y) => F(x) + "," + F(y);
+            double tmo = a.Num("timeout_s", 900);
             var r1 = Cmd(a, $"C\n{P(w[0], w[1])}\n{P(w[2], w[3])}\n\n", 90, 15, true);
-            var ip = a.NumArr("insert_point") ?? new[] { 20.8, 413.2 };
-            var r2 = Cmd(a, P(ip[0], ip[1]) + "\n", a.Num("timeout_s", 600), 40, true);
-            string st = (string)r2["state"];
+            // DCE co the tinh vai phut sau khi chon (main thread ban): CHO toi khi AutoCAD ranh, khong tu dung
+            int active = WaitResponsive(tmo);
+            string st;
+            if (active == 0) { st = "done"; rep.Notes.Add("TAOMV xong ma khong hoi diem chen"); }
+            else
+            {
+                var ip = a.NumArr("insert_point") ?? new[] { 20.8, 413.2 };
+                var r2 = Cmd(a, P(ip[0], ip[1]) + "\n", tmo, 60, true);
+                st = (string)r2["state"];
+            }
             for (int i = 0; i < 5 && st == "running"; i++)
             {
                 var r3 = (Dictionary<string, object>)CommandRunner.Status(new Args(new Dictionary<string, object> { ["timeout_s"] = 300, ["stall_s"] = 40, ["return_handles"] = false }));
