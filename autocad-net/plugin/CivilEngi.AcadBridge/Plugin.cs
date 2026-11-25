@@ -15,7 +15,7 @@ namespace CivilEngi.AcadBridge
     /// </summary>
     public class Plugin : IExtensionApplication
     {
-        public const string Version = "0.3.0";
+        public const string Version = "0.4.0";
         public static readonly string BaseName =
             string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE")) ? "CivilEngiAcad" : Environment.GetEnvironmentVariable("CIVIL_ACAD_PIPE");
         internal static PipeServer Server;
@@ -30,7 +30,7 @@ namespace CivilEngi.AcadBridge
                 Server = new PipeServer(name);
                 Server.Start();
                 Log.Write("Khoi dong, pipe=" + name + ", AutoCAD " + Application.Version);
-                WriteLine("\nCivilEngi AcadBridge " + Version + " san sang (pipe \\\\.\\pipe\\" + name + "). Lenh: CEBRIDGE");
+                WriteLine("\nCivilEngi AcadBridge " + Version + " san sang (pipe \\\\.\\pipe\\" + name + "). Lenh: CEBRIDGE, CE_DANTRANG, CE_SOATTO, CE_NETKHUAT, CE_CHUPTO");
             }
             catch (System.Exception ex)
             {

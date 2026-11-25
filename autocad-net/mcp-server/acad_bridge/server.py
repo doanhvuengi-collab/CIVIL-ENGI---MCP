@@ -233,6 +233,51 @@ def acad_dce_sck(x0: float, x1: float, factor: int = 1, set: dict[str, int] | No
     return _call("dce_sck", x0=x0, x1=x1, factor=factor, set=set, run=run, doc=doc)
 
 
+# ----------------------------------------------------------------- dan trang chi tiet dam (gom 1 lenh)
+@mcp.tool()
+def acad_dam_dan_trang(mau: str, window: list[float], tang: str, prefix: str, start: int | None = None,
+                       ticks: dict[str, bool] | None = None, fix: bool = True, fix_names: bool = True,
+                       net_khuat: bool = True, zoom: bool = True, shots: bool = True, max_shots: int = 6,
+                       backup: bool = True, save: bool = False, title_find: str | None = None,
+                       title_format: str | None = None, timeout_s: float = 600, doc: str | None = None) -> Any:
+    r"""DAN TRANG 1 TANG DAM DCE trong 1 lan goi (thay hang tram lenh nho):
+    backup -> TAOMV (form LayoutVPs: chon layout mau `mau`, tick o, Tao MV, chon C theo window, diem chen 20.8,413.2)
+    -> doi ten to <prefix>-<start..> + khung ten 'DẦM TẦNG n - 0x' -> sap tab -> soat & sua tung to:
+    net ngan DCE_NetKhuat (LTscale 0.5, width 0.3, gióng thang; to 1 dam thi xoa), doi ten dam bi view cat vao giua view
+    (chi ten + TL, khong dong zigzag/net cat model), bao: dam vat 2 to, view noi ngan, view chong / ngoai khung, chu bi cat
+    -> Z E tung to -> chup anh cac to co loi (PNG trong %TEMP%\CivilEngiShots). save=False: tu luu 1 lan cuoi dot.
+    window=[x1,y1,x2,y2] vung model cua tang. tang: '1', '3-4', 'TUM', 'MAI'. start bo trong = so 4xx lon nhat + 1.
+    Tra gon: so_loi, loi[], da_sua[], anh[]. CHI XEM ANH cac to trong 'anh'."""
+    return _call("dam_dan_trang", mau=mau, window=window, tang=tang, prefix=prefix, start=start, ticks=ticks,
+                 fix=fix, fix_names=fix_names, net_khuat=net_khuat, zoom=zoom, shots=shots, max_shots=max_shots,
+                 backup=backup, save=save, title_find=title_find, title_format=title_format, timeout_s=timeout_s, doc=doc)
+
+
+@mcp.tool()
+def acad_dam_soat_to(layouts: list[str] | None = None, from_: str | None = None, to: str | None = None,
+                     pattern: str | None = None, fix: bool = False, fix_names: bool = True, net_khuat: bool = True,
+                     shots: bool = False, max_shots: int = 6, doc: str | None = None) -> Any:
+    """Soat cac to dam co san (layouts[] hoac from_='02-426', to='02-436', hoac pattern regex).
+    fix=False chi bao loi (mac dinh); fix=True sua net ngan + doi ten dam bi cat nhu acad_dam_dan_trang.
+    Loi: ten_bi_cat, chu_bi_cat, dam_vat_2_to, view_noi_ngan, vp_chong, vp_ngoai_khung, net_ngan, khong_thay_ten."""
+    return _call("dam_soat_to", layouts=layouts, **{"from": from_}, to=to, pattern=pattern, fix=fix,
+                 fix_names=fix_names, net_khuat=net_khuat, shots=shots, max_shots=max_shots, doc=doc)
+
+
+@mcp.tool()
+def acad_dam_net_khuat(pattern: str = r"^\d+-4\d\d$", net_ltscale: float = 0.5, net_width: float = 0.3,
+                       run: bool = True, doc: str | None = None) -> Any:
+    """BUOC CUOI BAT BUOC moi dot dan trang: moi net ngan DCE_NetKhuat trong cac layout khop pattern
+    (mac dinh xx-4xx) ve linetype scale 0.5 (va width 0.3). run=False chi dem."""
+    return _call("dam_net_khuat", pattern=pattern, net_ltscale=net_ltscale, net_width=net_width, run=run, doc=doc)
+
+
+@mcp.tool()
+def acad_layout_shot(layouts: list[str], max_width: int = 1400, doc: str | None = None) -> Any:
+    """Chup to (Z E roi chup cua so AutoCAD) ra PNG, tra duong dan. Chi chup to can xem de tiet kiem token."""
+    return _call("layout_shot", layouts=layouts, max_width=max_width, doc=doc)
+
+
 # ----------------------------------------------------------------- lenh AutoCAD / add-in
 @mcp.tool()
 def acad_command(command: str, auto_answer: list[dict[str, str]] | None = None, wait: bool = True,

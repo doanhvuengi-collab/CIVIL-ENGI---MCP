@@ -259,6 +259,8 @@ namespace CivilEngi.AcadBridge
             var layers = U.Wilds(a.StrList("layers"));
             var blocks = U.Wilds(a.StrList("blocks"));
             double tol = a.Num("tol", 1);
+            double maxSize = a.Num("max_size", 0);               // >0: bo qua doi tuong bbox lon hon (vd block thep san)
+            var skipLabels = U.Wilds(a.StrList("skip_labels"));  // vd ["*ThepSan*"]
             var res = new Dictionary<string, object>();
             using (var tr = db.TransactionManager.StartOpenCloseTransaction())
             {
@@ -285,7 +287,10 @@ namespace CivilEngi.AcadBridge
                     else if (e is DBText t) label = t.TextString;
                     else if (e is MText m) label = m.Text;
                     var x = U.Ext(e);
-                    if (x.HasValue) ents.Add((U.H(id), id.ObjectClass.DxfName, e.Layer, label, x.Value));
+                    if (!x.HasValue) continue;
+                    if (maxSize > 0 && (x.Value.MaxPoint.X - x.Value.MinPoint.X > maxSize || x.Value.MaxPoint.Y - x.Value.MinPoint.Y > maxSize)) continue;
+                    if (skipLabels != null && skipLabels.Any(r => r.IsMatch(label ?? ""))) continue;
+                    ents.Add((U.H(id), id.ObjectClass.DxfName, e.Layer, label, x.Value));
                 }
                 if (names == null)
                 {

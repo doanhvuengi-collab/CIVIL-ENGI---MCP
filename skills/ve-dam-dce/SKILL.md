@@ -41,6 +41,12 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - Thay 1 dầm: xoá dầm cũ cả khung Defpoints → `vd_ve.py <tên>`: VD ở (2.000.000, 0), dời x = điểm VDAll gốc của cột tầng, y theo vị trí dầm cũ. VD lẻ 1 dầm của nhóm gộp → đặt lại tên gộp + `sua_sck.py x0 x1 1 TEN=n --run`.
 - Sau khi vẽ: kiểm khung trùng (`khung_long.py`), không còn đối tượng tạm x > 1.9M, đủ tên dầm mỗi tầng (`dem_dam.py`).
 
+## Dàn trang 1 tầng bằng plugin (cách mặc định, ít token)
+- Gọi **một** tool cho mỗi tầng: `acad_dam_dan_trang(mau, window, tang, prefix)` (plugin ≥ 0.4.0). Lệnh tự TAOMV, đặt tên tờ + khung tên, sửa nét ngăn, dời tên dầm bị cắt, rồi trả danh sách lỗi + ảnh các tờ có lỗi.
+- Chỉ đọc `loi[]` và chỉ xem ảnh trong `anh[]`. Lỗi chỉ báo (dầm vắt 2 tờ, view nối ngắn, chữ bị cắt) thì sửa tay từng chỗ theo luật dưới, rồi `acad_dam_soat_to(from_, to)` soát lại.
+- User duyệt từng tầng xong mới chạy tầng tiếp. Hết đợt: `acad_dam_net_khuat()` rồi `acad_save()` một lần.
+- User cũng tự chạy được bằng lệnh gõ tay `CE_DANTRANG`, `CE_SOATTO`, `CE_NETKHUAT`.
+
 ## TAOMV + đánh số
 - **Tên dầm bị cắt view**: khi đường cắt view chạy qua tên "DẦM …" + TL (tên nằm nửa trong nửa ngoài view), dời tên dầm vào giữa phần view hiển thị đầy đủ, không để tên bị cắt đôi. Sau khi dời, kiểm vướng chữ: tên không đè thép, dim, trục, ký hiệu (user 24/11).
 - **View tiếp nối quá ngắn**: dầm dài bị cắt thành 2 view mà view sau chỉ còn 1 mẩu ngắn (vd 1 nhịp) → dời điểm cắt về một gối sớm hơn cho 2 view cân đối hơn (view sau dài hơn, kéo dãn tới gần mép phải). Thực hiện bằng cách chỉnh viewport trong LAYOUT. Không dời được (hết chỗ, tràn sheet) thì để nguyên, không cần làm (user 24/11).
@@ -99,4 +105,5 @@ Công cụ trên máy user: `E:\OneDrive\.Claude\AutoCAD-MCP` (server.py MCP COM
 - [ ] ⛔ **Nét cắt / zigzag: chỉ dời trong LAYOUT (paper space), từng cái bị view đè. TUYỆT ĐỐI KHÔNG dời trong MODEL.** Trước khi chạy lệnh dời, xác nhận ActiveSpace = paper space.
 - [ ] Hàng MC tràn → B1 dời dầm lên; B2 dời MC lên; B3 thu view MC; B4 copy view MC xuống hàng dưới. Chật quá → để mặc định + báo.
 - [ ] Mỗi layout dàn xong: Z ↵ E ↵ (Zoom Extents) trong paper space.
-- [ ] Chụp từng sheet tự kiểm trước khi báo user.
+- [ ] Chụp từng sheet tự kiểm trước khi báo user (dùng `anh[]` của lệnh plugin, chỉ tờ có lỗi).
+- [ ] ⛔ **Bước cuối bắt buộc mỗi đợt**: mọi nét ngăn DCE_NetKhuat trong layout đặt linetype scale 0.5 (`acad_dam_net_khuat` / `CE_NETKHUAT`).

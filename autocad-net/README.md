@@ -46,12 +46,43 @@ Mỗi phiên AutoCAD mở một pipe riêng `CivilEngiAcad-<pid>`. Client chọn
 | Vẽ | `draw` | nhiều line/polyline/text/mtext/block/dim/circle trong một lần gọi |
 | Soát sheet | `viewports`, `viewport_set`, `viewport_cut_check`, `find_overlaps` | vùng model của từng view, chữ/block bị viewport cắt, khung Defpoints trùng |
 | DCE | `dce_sck` | nhân/đặt số cấu kiện XData DcePro (thay `sua_sck.py`), mặc định chỉ xem trước |
+| Dàn trang dầm | `dam_dan_trang`, `dam_soat_to`, `dam_net_khuat`, `layout_shot` | cả quy trình dàn trang 1 tầng trong 1 lệnh (xem mục dưới) |
 | Lệnh | `command`, `command_status`, `command_cancel`, `dialogs`, `dialog_click` | chạy VDAll/VD/TAOMV…, tự bấm hộp thoại, không treo |
 | Khác | `zoom`, `regen`, `var_get`, `var_set`, `backup`, `save`, `pick_points`, `select` | `backup` = copy file dwg đã lưu (cảnh báo nếu còn thay đổi chưa lưu) |
 
 Giao thức: mỗi dòng là một JSON `{"id":1,"cmd":"query","args":{...}}`, plugin trả một dòng
 `{"id":1,"ok":true,"ms":12,"result":...}` hoặc `{"ok":false,"kind":"busy|error|exception","error":"..."}`.
 Pipe chỉ mở cho user Windows đang đăng nhập.
+
+## Dàn trang chi tiết dầm 1 tầng (một lệnh, dùng chung cho Claude và người)
+
+Một lần gọi làm hết: backup → TAOMV (tự chọn layout mẫu, tick 4 ô, Tạo MV, chọn **C** theo vùng tầng, điểm chèn 20.8,413.2)
+→ đặt tên tờ `<prefix>-4xx` nối tiếp + khung tên "DẦM TẦNG n - 0x" → sắp tab → soát và sửa từng tờ → Z E → chụp ảnh các tờ có lỗi.
+
+| Việc trong lệnh | Sửa tự động | Chỉ báo |
+|---|---|---|
+| Nét ngăn `DCE_NetKhuat`: LTscale 0.5, width 0.3, nắn thẳng, gióng đều đầu | ✓ | |
+| Tờ chỉ 1 dầm → xoá nét ngăn | ✓ | |
+| Tên dầm (`Dce_KhTenDam` + TL đi kèm) bị viền view cắt → dời vào giữa view, tránh chữ/dim/block khác | ✓ (không tìm được chỗ trống thì báo) | |
+| Một dầm vắt 2 tờ (theo khung Defpoints của dầm) | | ✓ |
+| View nối quá ngắn (< 35% view trước) | | ✓ |
+| View chồng nhau / lòi ra ngoài khung giấy | | ✓ |
+| Chữ, ký hiệu khác bị viền view cắt (đã lọc block thép sàn bbox lớn, zigzag, Defpoints) | | ✓ |
+
+Không đụng: zigzag/nét cắt trong model, viewport (không xoá), đối tượng không do lệnh tạo (trừ dời tên dầm bị cắt và nét ngăn).
+Không tự lưu trừ khi `save=true`.
+
+**Gõ tay trong AutoCAD**
+- `CE_DANTRANG`: hỏi layout mẫu → kéo khung vùng tầng trong Model → tên tầng (1, 3-4, TUM, MAI) → tiền tố (02) → số tờ đầu (Enter = tự động) → có lưu không. Chạy nền, xong in kết quả ra dòng lệnh. Đừng thao tác AutoCAD tới khi in kết quả.
+- `CE_SOATTO`: hỏi tờ đầu, tờ cuối (vd 02-426 → 02-436), có sửa luôn không. Mặc định chỉ báo lỗi.
+- `CE_NETKHUAT`: bước cuối mỗi đợt, mọi nét ngăn trong layout xx-4xx về LTscale 0.5, width 0.3.
+- `CE_CHUPTO`: chụp tờ hiện hành ra PNG (`%TEMP%\CivilEngiShots`).
+
+**Claude gọi** (tool MCP): `acad_dam_dan_trang(mau="MAU-DAM", window=[458000,-190000,553000,75000], tang="3-4", prefix="02")`,
+`acad_dam_soat_to(from_="02-426", to="02-436")`, `acad_dam_net_khuat()`, `acad_layout_shot(["02-430"])`.
+Kết quả gọn: `so_loi`, `loi[]`, `da_sua[]`, `anh[]` (chỉ xem ảnh trong `anh`).
+
+Hai bên dùng chung một khoá: đang chạy `CE_DANTRANG` thì lệnh của Claude trả `busy` và ngược lại.
 
 ## Dùng trong script (thay `server._doc()` COM)
 
@@ -82,3 +113,4 @@ Dòng lệnh: `python -m acad_bridge status`, `python -m acad_bridge query "{\"l
 - `backup` copy file đã lưu trên đĩa. Bản vẽ còn thay đổi chưa lưu thì plugin cảnh báo chứ không tự lưu.
 - `viewport_cut_check` bỏ qua viewport xoay (twist) và chỉ xét khung chữ nhật của viewport clip.
 - Lệnh chờ nhập: plugin báo `waiting_input` nhưng chưa đọc được nội dung prompt.
+- Dàn trang: chưa tự dời điểm cắt view nối ngắn, chưa tự dồn dầm vắt 2 tờ (chỉ báo). Ô tick của form TAOMV nếu không đọc được trạng thái thì giữ nguyên và ghi chú. Ảnh chụp là cửa sổ AutoCAD.
