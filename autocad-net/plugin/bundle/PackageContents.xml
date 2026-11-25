@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bundle tu nap khi mo AutoCAD 2023 (R24.2). Cai vao %APPDATA%\Autodesk\ApplicationPlugins\CivilEngiAcadBridge.bundle -->
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD" ProductType="Application"
+                    Name="CivilEngi AcadBridge" Description="Cau noi named pipe cho Claude dieu khien AutoCAD"
+                    AppVersion="0.1.0" Author="CIVIL ENGI" ProductCode="{6E0C2F7A-3B1D-4C59-9F0E-2A7C1B8D4E61}"
+                    UpgradeCode="{B3A1D5E2-7C4F-4E8A-A0B9-5D2E6F1C3A47}">
+  <CompanyDetails Name="CIVIL ENGI" />
+  <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.2" SeriesMax="R24.2" />
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.2" SeriesMax="R24.2" />
+    <ComponentEntry AppName="CivilEngiAcadBridge" ModuleName="./Contents/CivilEngi.AcadBridge.dll"
+                    AppDescription="AcadBridge" LoadOnAutoCADStartup="True" />
+  </Components>
+</ApplicationPackage>
